@@ -48,7 +48,7 @@ ORDER BY
 
 
 
-Answer: 
+Answer: Country: United states have the highest transaction revenue. San Francisco is the city with the highest transaction revenue
 
 
 
@@ -110,7 +110,7 @@ GROUP BY
 
 
 
-Answer:
+Answer: This returned 268 rows with United States having the highest average ordered quantity
 
 
 
@@ -147,7 +147,7 @@ WHERE   pr.product_category != 'UNKNOWN' AND country NOT IN ('(not set)', 'not a
 
 
 
-Answer:
+Answer: Home/shop by/YouTube is ranked top by total order in most cities and countries
 
 
 
@@ -184,15 +184,36 @@ FROM
 
 
 
-Answer:
-
-
-
+Answer: This returned 400 records
 
 
 **Question 5: Can we summarize the impact of revenue generated from each city/country?**
 
 SQL Queries:
+WITH total_revenue AS (SELECT	
+									CASE 
+										WHEN s.country in ('(not set)', 'not available in demo dataset') THEN city
+										ELSE s.country
+										END AS country,
+									CASE 
+										WHEN s.city in ('(not set)', 'not available in demo dataset') THEN country
+										ELSE s.city
+										END AS city,
+									ROUND(SUM(units_sold::NUMERIC * unit_price::NUMERIC/1000000), 2) AS total_revenue, 
+									RANK() OVER (PARTITION BY SUM(units_sold::NUMERIC * unit_price::NUMERIC/1000000) ORDER BY SUM(units_sold::NUMERIC * unit_price::NUMERIC/1000000) DESC) AS Ranking
+						FROM all_sessions s
+									JOIN analytics a 
+									ON s.full_visitor_id = a.full_visitor_id 
+						GROUP BY 
+								country, city
+						HAVING 
+								SUM(total_transaction_revenue::NUMERIC) IS NOT NULL)
+SELECT *
+FROM 
+		total_revenue;
+		
+		
+--using the total_transaction_revenue data	
 WITH total_revenue AS (SELECT	CASE 
 									WHEN s.country in ('(not set)', 'not available in demo dataset') THEN city
 									ELSE s.country
@@ -207,13 +228,13 @@ WITH total_revenue AS (SELECT	CASE
 								country, city
 						HAVING 
 								SUM(total_transaction_revenue::NUMERIC) IS NOT NULL)
-SELECT   *
-FROM     total_revenue
+SELECT *
+FROM 
+		total_revenue
 ORDER BY total_revenue DESC;
 
 
-
-Answer:
+Answer: United States is generating more revenues.
 
 
 
