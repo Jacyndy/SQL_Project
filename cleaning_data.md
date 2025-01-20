@@ -46,4 +46,12 @@ WITH total_revenue AS (SELECT
 									RANK() OVER (PARTITION BY SUM(units_sold::NUMERIC * unit_price::NUMERIC/1000000) ORDER BY SUM(units_sold::NUMERIC * unit_price::NUMERIC/1000000) DESC) AS Ranking
 						FROM all_sessions s...
 
+6. Deleted duplicates of full_visitor_id from all_sessions table. To have unique full_visitor_id
+DELETE FROM	all_sessions 
+WHERE		full_visitor_id IN (
+    	SELECT full_visitor_id FROM (
+        	SELECT full_visitor_id, ROW_NUMBER() OVER (PARTITION BY full_visitor_id ORDER BY full_visitor_id) AS row_num
+        	FROM all_sessions
+    ) s WHERE s.row_num > 1
+); 
 
