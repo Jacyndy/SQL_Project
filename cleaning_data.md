@@ -1,13 +1,10 @@
 What issues will you address by cleaning the data?
-
-
-
-
+--Data cleaning
+When setting up the database, the columns were imported as text to avoid any data loss. The data types were then cast to the right data type before using them for analysis. Nulls were also excluded from the data.
 
 Queries:
 Below, provide the SQL queries you used to clean your data.
---Data cleaning
-When setting up the database, the columns were imported as text to avoid any data loss. The data types were then cast to the right data type before using them for analysis.
+
 1. one of the data cleaning applied to the data used for this analysis was to first change the data type from text to 
 character varying for the country and city column using the graphical interface. The total_transaction column was also 
 cast to numeric. Transaction_revenue column was used for analysis because it contains more data than we have for total_transaction. In addition, the 4 records in the transaction_revenue column equals the records in the total_transaction_revenue column.
