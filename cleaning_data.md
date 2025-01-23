@@ -27,12 +27,15 @@ USING ordered_quantity::integer;
 
 4. Nulls and missing data in the product category column from the all_sessions table used in the analysis was also fixed. Records stored as 'not set' and 'not available in demo dataset' were treated as unknown and filtered out from the analysis
 A snapshot of the query used:
+```SQL
 SELECT		CASE 
 					WHEN s.product_category_v2 in ('(not set)', 'not available in demo dataset') THEN 'UNKNOWN'
 					ELSE s.product_category_v2
 					END AS product_category, ....
+```					
 
 5. Units sold, unit price were cast as numeric for the analysis. This is done as the value for unit price is bigger than big int. The valus is also divided by 1000000 to get the value in millions. The snapshot of the query used is below:
+```sql
 WITH total_revenue AS (SELECT	
 									CASE 
 										WHEN s.country in ('(not set)', 'not available in demo dataset') THEN city
@@ -45,8 +48,9 @@ WITH total_revenue AS (SELECT
 									ROUND(SUM(units_sold::NUMERIC * unit_price::NUMERIC/1000000), 2) AS total_revenue, 
 									RANK() OVER (PARTITION BY SUM(units_sold::NUMERIC * unit_price::NUMERIC/1000000) ORDER BY SUM(units_sold::NUMERIC * unit_price::NUMERIC/1000000) DESC) AS Ranking
 						FROM all_sessions s...
-
+```
 6. Deleted duplicates of full_visitor_id from all_sessions table. To have unique full_visitor_id
+```sql
 DELETE FROM	all_sessions 
 WHERE		full_visitor_id IN (
     	SELECT full_visitor_id FROM (

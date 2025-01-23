@@ -46,7 +46,7 @@ HAVING
 		    SUM(total_transaction_revenue::NUMERIC) IS NOT NULL --Add this as the query used to clean the data
 ORDER BY 
 		    transaction_revenue DESC;*/
-			```
+```			
 
 
 
@@ -60,6 +60,7 @@ Answer: Country: United states have the highest transaction revenue. San Francis
 
 SQL Queries:
 
+```sql
 SELECT 	CASE 
 				WHEN s.country in ('(not set)', 'not available in demo dataset') THEN city
 				ELSE s.country
@@ -108,13 +109,13 @@ FROM
 		p.sku = aq.sku
 GROUP BY 
 		country, city;
-
+```
 
 
 
 Answer: This returned 268 rows with United States having the highest average ordered quantity
 
-![alt text](image-1.png)
+![alt text](SQL_images/Question_2.png)
 
 
 
@@ -122,6 +123,7 @@ Answer: This returned 268 rows with United States having the highest average ord
 
 
 SQL Queries:
+```sql
 WITH product_CAT_CTE AS (SELECT CASE 
                                     WHEN s.product_category_v2 in ('(not set)', 'not available in demo dataset') THEN 'UNKNOWN'
                                     ELSE s.product_category_v2
@@ -145,13 +147,11 @@ WITH product_CAT_CTE AS (SELECT CASE
 SELECT  *
 FROM    product_CAT_CTE pr
 WHERE   pr.product_category != 'UNKNOWN' AND country NOT IN ('(not set)', 'not available in demo dataset')
-
-
-
+```
 
 Answer: Home/shop by/YouTube is ranked top by total order in most cities and countries
 
-![alt text](image-2.png)
+![alt text](SQL_images/Question_3.png)
 
 
 
@@ -159,6 +159,7 @@ Answer: Home/shop by/YouTube is ranked top by total order in most cities and cou
 
 
 SQL Queries:
+```sql
 WITH top_selling_product AS (SELECT	
 									CASE 
 										WHEN s.country in ('(not set)', 'not available in demo dataset') THEN city
@@ -183,15 +184,15 @@ WITH top_selling_product AS (SELECT
 SELECT  *
 FROM 
 	    top_selling_product
-
-
+```		
 
 Answer: This returned 400 records
-![alt text](image-3.png)
+![alt text](SQL_images/Question_4.png)
 
 **Question 5: Can we summarize the impact of revenue generated from each city/country?**
 
 SQL Queries:
+```sql
 WITH total_revenue AS (SELECT	
 									CASE 
 										WHEN s.country in ('(not set)', 'not available in demo dataset') THEN city
@@ -234,11 +235,11 @@ SELECT *
 FROM 
 		total_revenue
 ORDER BY total_revenue DESC;
-
+```
 
 Answer: United States is generating more revenues.
 
-![alt text](image-4.png)
+![alt text](SQL_images/Question_5.png)
 
 
 
