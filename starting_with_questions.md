@@ -5,6 +5,7 @@ Answer the following questions and provide the SQL queries used to find the answ
 
 
 SQL Queries:
+```sql
 SELECT	CASE 
 			WHEN s.country in ('(not set)', 'not available in demo dataset') THEN city
 			ELSE s.country
@@ -45,12 +46,13 @@ HAVING
 		    SUM(total_transaction_revenue::NUMERIC) IS NOT NULL --Add this as the query used to clean the data
 ORDER BY 
 		    transaction_revenue DESC;*/
+			```
 
 
 
 Answer: Country: United states have the highest transaction revenue. San Francisco is the city with the highest transaction revenue
 
-![alt text](image.png)
+![alt text](SQL_images/Question_1.png)
 
 
 **Question 2: What is the average number of products ordered from visitors in each city and country?**
