@@ -50,7 +50,7 @@ ORDER BY
 
 Answer: Country: United states have the highest transaction revenue. San Francisco is the city with the highest transaction revenue
 
-
+![alt text](image.png)
 
 
 **Question 2: What is the average number of products ordered from visitors in each city and country?**
@@ -112,7 +112,7 @@ GROUP BY
 
 Answer: This returned 268 rows with United States having the highest average ordered quantity
 
-
+![alt text](image-1.png)
 
 
 
@@ -149,7 +149,7 @@ WHERE   pr.product_category != 'UNKNOWN' AND country NOT IN ('(not set)', 'not a
 
 Answer: Home/shop by/YouTube is ranked top by total order in most cities and countries
 
-
+![alt text](image-2.png)
 
 
 
@@ -185,7 +185,7 @@ FROM
 
 
 Answer: This returned 400 records
-
+![alt text](image-3.png)
 
 **Question 5: Can we summarize the impact of revenue generated from each city/country?**
 
@@ -236,7 +236,7 @@ ORDER BY total_revenue DESC;
 
 Answer: United States is generating more revenues.
 
-
+![alt text](image-4.png)
 
 
 
