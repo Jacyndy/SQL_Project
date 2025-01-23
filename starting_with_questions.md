@@ -126,11 +126,11 @@ SQL Queries:
 ```sql
 WITH product_CAT_CTE AS (SELECT CASE 
                                     WHEN s.product_category_v2 in ('(not set)', 'not available in demo dataset') THEN 'UNKNOWN'
-                                    ELSE s.product_category_v2
+                                    	ELSE s.product_category_v2
                                     END AS product_category,
                                 CASE 
                                     WHEN s.country in ('(not set)', 'not available in demo dataset') THEN city
-                                    ELSE s.country
+                                    	ELSE s.country
                                     END AS country,
                                 CASE 
                                     WHEN s.city in ('(not set)', 'not available in demo dataset') THEN country
@@ -161,17 +161,17 @@ Answer: Home/shop by/YouTube is ranked top by total order in most cities and cou
 SQL Queries:
 ```sql
 WITH top_selling_product AS (SELECT	
-									CASE 
-										WHEN s.country in ('(not set)', 'not available in demo dataset') THEN city
+								CASE 
+									WHEN s.country in ('(not set)', 'not available in demo dataset') THEN city
 										ELSE s.country
-										END AS country,
-									CASE 
-										WHEN s.city in ('(not set)', 'not available in demo dataset') THEN country
+									END AS country,
+								CASE 
+									WHEN s.city in ('(not set)', 'not available in demo dataset') THEN country
 										ELSE s.city
-										END AS city,
-									p.product_name,
-									SUM(a.units_sold::numeric) AS total_units_sold, 
-									RANK() OVER (PARTITION BY country ORDER BY SUM(a.units_sold::numeric) DESC) AS Ranking
+									END AS city,
+								p.product_name,
+								SUM(a.units_sold::numeric) AS total_units_sold, 
+								RANK() OVER (PARTITION BY country ORDER BY SUM(a.units_sold::numeric) DESC) AS Ranking
 							FROM products p
 								JOIN all_sessions s 
 									ON p.sku = s.sku 
@@ -194,22 +194,22 @@ Answer: This returned 400 records
 SQL Queries:
 ```sql
 WITH total_revenue AS (SELECT	
-									CASE 
-										WHEN s.country in ('(not set)', 'not available in demo dataset') THEN city
-										ELSE s.country
-										END AS country,
-									CASE 
-										WHEN s.city in ('(not set)', 'not available in demo dataset') THEN country
-										ELSE s.city
-										END AS city,
-									ROUND(SUM(units_sold::NUMERIC * unit_price::NUMERIC/1000000), 2) AS total_revenue, 
+							CASE 
+								WHEN s.country in ('(not set)', 'not available in demo dataset') THEN city
+									ELSE s.country
+								END AS country,
+							CASE 
+								WHEN s.city in ('(not set)', 'not available in demo dataset') THEN country
+									ELSE s.city
+								END AS city,
+							ROUND(SUM(units_sold::NUMERIC * unit_price::NUMERIC/1000000), 2) AS total_revenue, 
 									RANK() OVER (PARTITION BY SUM(units_sold::NUMERIC * unit_price::NUMERIC/1000000) ORDER BY SUM(units_sold::NUMERIC * unit_price::NUMERIC/1000000) DESC) AS Ranking
-						FROM all_sessions s
+					FROM all_sessions s
 									JOIN analytics a 
 									ON s.full_visitor_id = a.full_visitor_id 
-						GROUP BY 
+					GROUP BY 
 								country, city
-						HAVING 
+					HAVING 
 								SUM(total_transaction_revenue::NUMERIC) IS NOT NULL)
 SELECT *
 FROM 
